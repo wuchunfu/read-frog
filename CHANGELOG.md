@@ -1,5 +1,17 @@
 # @read-frog/extension
 
+## 1.32.3
+
+### Patch Changes
+
+- [#1323](https://github.com/mengxi-ream/read-frog/pull/1323) [`da2e94b`](https://github.com/mengxi-ream/read-frog/commit/da2e94bb151e1dca2ca2ac31d777df28210452af) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(selection-toolbar): add more cursor clearance after text selection
+
+- [#1318](https://github.com/mengxi-ream/read-frog/pull/1318) [`74f4219`](https://github.com/mengxi-ream/read-frog/commit/74f42196158be314dc65dc6e9c00b78ab021be23) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(selection-toolbar): derive custom action webpage context by popover session
+
+- [#1324](https://github.com/mengxi-ream/read-frog/pull/1324) [`08b40e8`](https://github.com/mengxi-ream/read-frog/commit/08b40e82cd2c8d7b46e2cac8e1d87672c813fe0b) Thanks [@frogGuaGuaGuaGua](https://github.com/frogGuaGuaGuaGua)! - fix: keep floating button close menu aligned after reopening
+
+- [#1321](https://github.com/mengxi-ream/read-frog/pull/1321) [`fb1937c`](https://github.com/mengxi-ream/read-frog/commit/fb1937c437bcba8ae1eacb181f367e61cc26c3db) Thanks [@yioulii](https://github.com/yioulii)! - fix: floating button style
+
 ## 1.32.2
 
 ### Patch Changes
