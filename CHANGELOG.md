@@ -1,5 +1,67 @@
 # @read-frog/extension
 
+## 1.46.0
+
+### Minor Changes
+
+- [#2065](https://github.com/mengxi-ream/read-frog/pull/2065) [`800184f`](https://github.com/mengxi-ream/read-frog/commit/800184fec09d35b84a063d150423d12705563309) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - feat(hosted-ai): run video subtitles, input translation, and language detection on Built-in AI
+
+  Built-in AI now covers video subtitles (translation, the video summary, and AI segmentation), input-box translation, language detection, and page translation's AI summary — everything that previously needed your own API key. Like page translation, these run on the Ultra plan; provider dropdowns mark and gray out what your account cannot run, and the Ultra badge opens the pricing page.
+
+  Language detection in particular could never offer Built-in AI before: its provider picker only listed providers stored in your own configuration, and the built-in ones are not stored there. Fixing that makes LLM detection mode available whenever an account can actually run it, and deleting your last API provider no longer silently drops language detection back to basic — if nothing left could run a feature, the deletion is refused and names the feature instead.
+
+- [#2059](https://github.com/mengxi-ream/read-frog/pull/2059) [`c7f4535`](https://github.com/mengxi-ream/read-frog/commit/c7f453588a183f1941f70b6205d814b955297dc6) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - feat(hosted-ai): add Built-in AI Normal and Ultra tiers with quota UI
+
+  Built-in AI now comes in two tiers. Ultra members can run page translation on the advanced model, everyone else keeps Custom AI Actions on the standard one. A new quota section on the API Providers page shows how much of each pool is left and when it resets, and provider dropdowns mark Ultra-only options and gray out what the account cannot run.
+
+### Patch Changes
+
+- [#2065](https://github.com/mengxi-ream/read-frog/pull/2065) [`800184f`](https://github.com/mengxi-ream/read-frog/commit/800184fec09d35b84a063d150423d12705563309) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - refactor(hosted-ai): rename the advanced Built-in AI tier from ultra to advance
+
+  The hosted model tier is now `advance` rather than `ultra`, and the advanced built-in provider's id is `read-frog-advance-ai` rather than `read-frog-ultra-ai`. Model names and plan names are now separate vocabularies: which plan unlocks which tier is server-side policy, so a future plan can be sold with any tier without renaming anything here. The provider's display name is unchanged ("Advanced Built-in AI"), and the "Ultra" badge, its tooltip, and the "Ultra plan required" message all still say Ultra on purpose — they name the plan you have to buy, not the model you run on.
+
+  Config schema v097 rewrites the provider id everywhere it is persisted, so an existing selection of the advanced provider is preserved.
+
+- [#2065](https://github.com/mengxi-ream/read-frog/pull/2065) [`800184f`](https://github.com/mengxi-ream/read-frog/commit/800184fec09d35b84a063d150423d12705563309) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(hosted-ai): say when Built-in AI cannot run, and stop paying to ask
+
+  Built-in AI is in every feature's provider list whether or not your plan funds
+  it, and several places treated "a provider exists" as "a provider works". The
+  result was a set of failures with no symptom: video subtitles came back
+  untranslated and were recorded as done, input translation showed a spinner and
+  nothing else, and the Language detection card stayed green over a code path that
+  never ran once. Each of those now says which limit it hit, while still degrading
+  rather than breaking the page.
+
+  The same confusion drove the settings surfaces. Provider dropdowns, the
+  Language detection and AI-context cards, the popup's provider avatars and the
+  Built-in AI editor now share one rule for whether an option can actually run —
+  read from the plan and sign-in state alone, so an exhausted quota or a passing
+  outage no longer greys out an option you own, and a plan wall no longer reads as
+  healthy. Deleting a provider is refused when it would leave a feature with
+  nothing that can run it, naming the feature rather than saying "at least one LLM
+  provider is required".
+
+  Skip-language detection no longer uses an LLM. It runs once per paragraph, so a
+  long article meant hundreds of billed calls to avoid the occasional redundant
+  translation; franc answers the same question for free. Language detection mode
+  still governs the once-per-page source detection, where a wrong answer would
+  affect every paragraph.
+
+  Also: the hosted availability check is fetched once and shared instead of per
+  paragraph, per cue batch and per selection; original subtitles now appear
+  without waiting on it; the page-context warm-up covers Built-in AI, so the first
+  paragraph no longer pays for it; a video summary is no longer requested from a
+  provider that has no model to prompt; and hosted subtitle and input-translation
+  runs are no longer reported as provider "unknown" in usage analytics.
+
+- [#2057](https://github.com/mengxi-ream/read-frog/pull/2057) [`8486f47`](https://github.com/mengxi-ream/read-frog/commit/8486f478eeac08f6524133d90f85e26af8e353f9) Thanks [@ananaBMaster](https://github.com/ananaBMaster)! - fix(background): scope auth cache invalidation and stop the config-backup wake loop
+
+- [#2054](https://github.com/mengxi-ream/read-frog/pull/2054) [`1034a9a`](https://github.com/mengxi-ream/read-frog/commit/1034a9a9b12031498a35d2f119896f0d4fb3fc65) Thanks [@taiiiyang](https://github.com/taiiiyang)! - fix(subtitles): scale subtitle prefetch look-ahead by playback rate to prevent intermittent loading at 2x/3x
+
+- [#2065](https://github.com/mengxi-ream/read-frog/pull/2065) [`800184f`](https://github.com/mengxi-ream/read-frog/commit/800184fec09d35b84a063d150423d12705563309) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - feat(hosted-ai): open the pricing page when the Ultra badge is clicked
+
+  The Ultra badge that marks plan-gated Built-in AI options is now clickable and opens the pricing page, so an upgrade is one click away from the place the limit is discovered. Clicking it never selects the provider it sits on or toggles the assignment switch it sits beside, and its tooltip now says so.
+
 ## 1.45.3
 
 ### Patch Changes
